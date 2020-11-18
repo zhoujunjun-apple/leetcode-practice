@@ -7,6 +7,10 @@ var ts = []struct {
 	exput int
 }{
 	{
+		input: "1252345",
+		exput: 5,
+	},
+	{
 		input: "43210",
 		exput: 1,
 	},
