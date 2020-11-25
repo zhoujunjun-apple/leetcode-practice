@@ -62,6 +62,59 @@ func getMin(i, j, k int) int {
 	return min
 }
 
+// NativeDP function implement dp method rather than recursion
+func NativeDP(s1, s2 string) int {
+	s1Len, s2Len := len(s1), len(s2)
+	if s1Len == 0 {
+		return s2Len
+	}
+	if s2Len == 0 {
+		return s1Len
+	}
+
+	dp := make([][]int, s1Len)
+	for i := range dp {
+		dp[i] = make([]int, s2Len)
+	}
+
+	// fill up the first column
+	for ri := 0; ri < s1Len; ri++ {
+		if s1[ri] == s2[0] {
+			for k := ri; k < s1Len; k++ {
+				dp[k][0] = k
+			}
+			break
+		} else {
+			dp[ri][0] = ri + 1
+		}
+	}
+
+	// fill up the first row
+	for ci := 0; ci < s2Len; ci++ {
+		if s2[ci] == s1[0] {
+			for k := ci; k < s2Len; k++ {
+				dp[0][k] = k
+			}
+			break
+		} else {
+			dp[0][ci] = ci + 1
+		}
+	}
+
+	// same logic with recursion
+	for ri := 1; ri < s1Len; ri++ {
+		for ci := 1; ci < s2Len; ci++ {
+			if s1[ri] == s2[ci] {
+				dp[ri][ci] = getMin(dp[ri-1][ci]+1, dp[ri][ci-1]+1, dp[ri-1][ci-1])
+			} else {
+				dp[ri][ci] = getMin(dp[ri-1][ci], dp[ri][ci-1], dp[ri-1][ci-1]) + 1
+			}
+		}
+	}
+
+	return dp[s1Len-1][s2Len-1]
+}
+
 func main() {
 
 }
